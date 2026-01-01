@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>شوي دار | قائمة الطعام الفاخرة</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Cinzel:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Color Palette */
+            --gold: #D4AF37;
+            --gold-light: #F4E4A6;
+            --gold-dark: #B8860B;
+            --burgundy: #800020;
+            --burgundy-light: #A52A5A;
+            --dark: #1A1A1A;
+            --dark-light: #2D2D2D;
+            --cream: #F5F5DC;
+            --cream-dark: #E8E4C9;
+            --white: #FFFFFF;
+            --black: #000000;
+            
+            /* Theme Variables */
+            --primary: var(--gold);
+            --secondary: var(--burgundy);
+            --bg: var(--dark);
+            --card-bg: var(--dark-light);
+            --text: var(--cream);
+            --text-secondary: var(--gold-light);
+            --border: rgba(212, 175, 55, 0.3);
+            --shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            --transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        body {
+            font-family: 'El Messiri', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            position: relative;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(212, 175, 55, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(128, 0, 32, 0.05) 0%, transparent 20%);
+        }
+        
+        body.english {
+            font-family: 'Playfair Display', serif;
+            direction: ltr;
+        }
+        
+        /* Decorative Background Elements */
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(45deg, transparent 48%, var(--gold) 49%, var(--gold) 51%, transparent 52%),
+                linear-gradient(-45deg, transparent 48%, var(--gold) 49%, var(--gold) 51%, transparent 52%);
+            background-size: 100px 100px;
+            opacity: 0.03;
+            z-index: -1;
+        }
+        
+        /* Theme/Language Toggles */
+        .control-panel {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+            background: rgba(26, 26, 26, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            padding: 10px;
+            border: 1px solid var(--border);
+        }
+        
+        .control-panel.rtl {
+            right: 20px;
+            left: auto;
+        }
+        
+        .control-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .control-btn:hover {
+            background: var(--primary);
+            color: var(--dark);
+            transform: rotate(15deg);
+            border-color: var(--primary);
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 100px 0;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.9) 0%, rgba(26, 26, 26, 0.7) 100%),
+                        url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            z-index: -1;
+        }
+        
+        .restaurant-title {
+            font-family: 'Cinzel', serif;
+            font-size: 5rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .restaurant-title span {
+            color: var(--primary);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .restaurant-title span::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+        }
+        
+        .restaurant-subtitle {
+            font-size: 1.5rem;
+            text-align: center;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+        }
+        
+        .divider {
+            width: 150px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            margin: 30px auto;
+        }
+        
+        /* Menu Navigation */
+        .menu-nav {
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            padding: 15px 0;
+        }
+        
+        .nav-scroll {
+            display: flex;
+            overflow-x: auto;
+            gap: 20px;
+            padding: 0 20px;
+            scrollbar-width: none;
+        }
+        
+        .nav-scroll::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .nav-item {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            padding: 12px 25px;
+            border-radius: 30px;
+            white-space: nowrap;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+            transition: left 0.7s;
+        }
+        
+        .nav-item:hover::before {
+            left: 100%;
+        }
+        
+        .nav-item.active {
+            background: var(--primary);
+            color: var(--dark);
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.3);
+        }
+        
+        /* Menu Sections */
+        .menu-section {
+            padding: 100px 0;
+            position: relative;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+        
+        .section-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title::before,
+        .section-title::after {
+            content: '✦';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+        
+        .section-title::before {
+            right: -50px;
+        }
+        
+        .section-title::after {
+            left: -50px;
+        }
+        
+        .english .section-title::before {
+            left: -50px;
+            right: auto;
+        }
+        
+        .english .section-title::after {
+            right: -50px;
+            left: auto;
+        }
+        
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        /* Menu Items */
+        .menu-item {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .menu-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.05) 0%, transparent 50%);
+            z-index: 0;
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: var(--shadow);
+        }
+        
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .item-name {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--text);
+            margin: 0;
+        }
+        
+        .item-price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            font-family: 'Cinzel', serif;
+        }
+        
+        .item-description {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .price-variants {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .price-variant {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 20px;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+        
+        .variant-size {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        .variant-price {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        /* Special Item Styling */
+        .special-item {
+            background: linear-gradient(135deg, var(--card-bg) 0%, rgba(128, 0, 32, 0.2) 100%);
+            border: 1px solid var(--burgundy);
+        }
+        
+        .special-badge {
+            position: absolute;
+            top: 20px;
+            right: -30px;
+            background: var(--burgundy);
+            color: var(--cream);
+            padding: 8px 40px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transform: rotate(45deg);
+            box-shadow: 0 3px 10px rgba(128, 0, 32, 0.3);
+        }
+        
+        .english .special-badge {
+            right: auto;
+            left: -30px;
+            transform: rotate(-45deg);
+        }
+        
+        /* Decorative Elements */
+        .ornament {
+            position: absolute;
+            color: var(--primary);
+            opacity: 0.1;
+            font-size: 5rem;
+            z-index: 0;
+        }
+        
+        /* Footer */
+        .footer {
+            background: linear-gradient(180deg, var(--bg) 0%, var(--black) 100%);
+            padding: 80px 0 40px;
+            border-top: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+        }
+        
+        .footer-title {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+        
+        .footer-text {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+        
+        .contact-info {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .contact-info li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: var(--text-secondary);
+        }
+        
+        .contact-info i {
+            color: var(--primary);
+            margin-left: 10px;
+            font-size: 1.2rem;
+            width: 24px;
+        }
+        
+        .english .contact-info i {
+            margin-left: 0;
+            margin-right: 10px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-link {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text);
+            font-size: 1.2rem;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+        
+        .social-link:hover {
+            background: var(--primary);
+            color: var(--dark);
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 40px;
+            margin-top: 40px;
+            border-top: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        /* Scroll Progress */
+        .scroll-progress {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            width: 60px;
+            height: 60px;
+            background: var(--card-bg);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .scroll-progress.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .scroll-progress.rtl {
+            left: 40px;
+            right: auto;
+        }
+        
+        .scroll-progress:hover {
+            background: var(--primary);
+            color: var(--dark);
+            border-color: var(--primary);
+            transform: scale(1.1);
+        }
+        
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .restaurant-title {
+                font-size: 3.5rem;
+            }
+            
+            .section-title {
+                font-size: 2.8rem;
+            }
+            
+            .section-title::before,
+            .section-title::after {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .restaurant-title {
+                font-size: 2.5rem;
+            }
+            
+            .restaurant-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
+            
+            .control-panel {
+                top: 10px;
+                left: 10px;
+            }
+            
+            .control-panel.rtl {
+                right: 10px;
+            }
+            
+            .scroll-progress {
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            .scroll-progress.rtl {
+                left: 20px;
+            }
+        }
+        
+        /* Splash Screen */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s, visibility 0.8s;
+        }
+        
+        .splash-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .splash-logo {
+            font-family: 'Cinzel', serif;
+            font-size: 4rem;
+            color: var(--primary);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .splash-logo span {
+            color: var(--burgundy);
+        }
+        
+        .loading-bar {
+            width: 200px;
+            height: 2px;
+            background: var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .loading-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 30%;
+            background: var(--primary);
+            animation: loading 2s ease-in-out infinite;
+        }
+        
+        @keyframes loading {
+            0% { left: -30%; }
+            100% { left: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Splash Screen -->
+    <div class="splash-screen" id="splashScreen">
+        <div class="splash-logo">
+            <span>شوي</span> دار
+        </div>
+        <div class="loading-bar"></div>
+    </div>
+    
+    <!-- Background Pattern -->
+    <div class="bg-pattern"></div>
+    
+    <!-- Control Panel -->
+    <div class="control-panel rtl">
+        <button class="control-btn" id="themeBtn">
+            <i class="fas fa-moon"></i>
+        </button>
+        <button class="control-btn" id="langBtn">
+            <i class="fas fa-language"></i>
+        </button>
+    </div>
+    
+    <!-- Hero Section -->
+    <section class="hero-section" id="hero">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10 text-center">
+                    <h1 class="restaurant-title" id="restaurantTitle">
+                        <span>شوي</span> دار
+                    </h1>
+                    <div class="divider"></div>
+                    <p class="restaurant-subtitle" id="restaurantSubtitle">
+                        تجربة فاخرة من المطبخ العراقي الأصيل، حيث تلتقي النكهات التقليدية مع لمسات العصرنة
+                    </p>
+                    <div class="mt-5">
+                        <a href="#menu" class="btn btn-lg px-5 py-3" style="background: var(--primary); color: var(--dark); font-weight: 600; border-radius: 30px; border: none;">
+                            <i class="fas fa-utensils me-2"></i>
+                            <span id="viewMenuBtn">استعرض القائمة</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Menu Navigation -->
+    <nav class="menu-nav" id="menuNav">
+        <div class="nav-scroll" id="navScroll">
+            <!-- Navigation items will be added by JavaScript -->
+        </div>
+    </nav>
+    
+    <!-- Menu Content -->
+    <main class="container" id="menuContent">
+        <!-- Menu sections will be added by JavaScript -->
+    </main>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-5">
+                    <h3 class="footer-title" id="restaurantNameFooter">شوي دار</h3>
+                    <p class="footer-text" id="footerDescription">
+                        نقدم لكم أشهى المأكولات العراقية التقليدية بأسلوب عصري وأناقة فاخرة. كل طبق يُحضّر بعناية فائقة باستخدام أفضل المكونات.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-snapchat"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-tiktok"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-4 mb-5">
+                    <h3 class="footer-title" id="contactTitle">معلومات التواصل</h3>
+                    <ul class="contact-info">
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span id="address">بغداد، المنصور، شارع المتنبي</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <span id="phone">+964 771 234 5678</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <span id="email">info@shawidar.com</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-clock"></i>
+                            <span id="hours">يومياً من 12 ظهراً حتى 12 منتصف الليل</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 mb-5">
+                    <h3 class="footer-title" id="locationTitle">موقعنا</h3>
+                    <div class="footer-text">
+                        <p id="locationText">نقع في قلب العاصمة بغداد، في مكان يجمع بين الأصالة والحداثة. نرحب بكم في أي وقت لتجربة فريدة من نوعها.</p>
+                        <div class="mt-4">
+                            <a href="#" class="btn" style="background: transparent; border: 1px solid var(--primary); color: var(--primary); border-radius: 30px; padding: 10px 25px;">
+                                <i class="fas fa-map-marked-alt me-2"></i>
+                                <span id="directionBtn">احصل على الاتجاهات</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p id="copyrightText">© 2023 مطعم شوي دار. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Scroll to Top -->
+    <div class="scroll-progress rtl" id="scrollProgress">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+    
+    <!-- AOS Animation Library -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <script>
+        // Menu Data
+        const menuData = {
+            grilled: {
+                title: { ar: "المشويات الفاخرة", en: "Premium Grilled Dishes" },
+                subtitle: { ar: "أشهى المشويات العراقية بطابع فاخر", en: "Finest Iraqi grilled dishes with premium touch" },
+                icon: "fa-fire",
+                items: [
+                    { 
+                        name: { ar: "كباب لحم شوي دار الإمبراطوري", en: "Imperial Shawi Dar Kebab" }, 
+                        description: { ar: "كباب لحم فاخر محضر من أفضل قطع اللحم مع مزيج سري من التوابل العراقية النادرة", en: "Premium kebab prepared from finest meat cuts with secret blend of rare Iraqi spices" },
+                        prices: [
+                            { size: { ar: "نفر", en: "Per Person" }, price: 45 },
+                            { size: { ar: "نص كيلو", en: "Half Kilo" }, price: 85 },
+                            { size: { ar: "كيلو", en: "Kilo" }, price: 165 }
+                        ],
+                        special: true
+                    },
+                    { 
+                        name: { ar: "مشكل شوي دار الذهبي", en: "Golden Shawi Dar Mixed Grill" }, 
+                        description: { ar: "تشكيلة فاخرة من أفضل المشويات العراقية تقدم على صحن ذهبي مزين", en: "Premium assortment of finest Iraqi grilled items served on golden decorated plate" },
+                        prices: [
+                            { size: { ar: "نفر", en: "Per Person" }, price: 38 },
+                            { size: { ar: "نص كيلو", en: "Half Kilo" }, price: 75 },
+                            { size: { ar: "كيلو", en: "Kilo" }, price: 145 }
+                        ],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "كباب فقع حايلي الملكي", en: "Royal Haili Truffle Kebab" }, 
+                        description: { ar: "كباب لحم مع فقع حايلي عراقي نادر محضر بطريقة خاصة توارثتها الأجيال", en: "Meat kebab with rare Iraqi Haili truffle prepared using special method passed through generations" },
+                        prices: [
+                            { size: { ar: "نفر", en: "Per Person" }, price: 55 },
+                            { size: { ar: "نص كيلو", en: "Half Kilo" }, price: 105 },
+                            { size: { ar: "كيلو", en: "Kilo" }, price: 205 }
+                        ],
+                        special: true
+                    },
+                    { 
+                        name: { ar: "ريش اللحم البغدادي", en: "Baghdadi Skewered Meat" }, 
+                        description: { ar: "ريش لحم مشوي على الفحم الطبيعي بطريقة بغدادية أصلية مع تتبيلة سرية", en: "Skewered meat grilled on natural charcoal using original Baghdadi method with secret marinade" },
+                        prices: [
+                            { size: { ar: "نفر", en: "Per Person" }, price: 42 },
+                            { size: { ar: "نص كيلو", en: "Half Kilo" }, price: 82 },
+                            { size: { ar: "كيلو", en: "Kilo" }, price: 160 }
+                        ],
+                        special: false
+                    }
+                ]
+            },
+            oven: {
+                title: { ar: "أطباق الفرن الملكية", en: "Royal Oven Dishes" },
+                subtitle: { ar: "أطباق تقليدية محضرة في فرن حجري خاص", en: "Traditional dishes prepared in special stone oven" },
+                icon: "fa-utensils",
+                items: [
+                    { 
+                        name: { ar: "محموس لحم شوي دار الفاخر", en: "Premium Shawi Dar Meat Mahmoos" }, 
+                        description: { ar: "لحم محموس فاخر مع خضار عضوية وتوابل عراقية نادرة محضر في فرن حجري", en: "Premium oven-baked meat with organic vegetables and rare Iraqi spices prepared in stone oven" },
+                        prices: [
+                            { size: { ar: "طبق فردي", en: "Single Dish" }, price: 35 },
+                            { size: { ar: "طبق عائلي", en: "Family Dish" }, price: 65 }
+                        ],
+                        special: true
+                    },
+                    { 
+                        name: { ar: "تكة فرن ذهبية", en: "Golden Oven Tika" }, 
+                        description: { ar: "تكة لحم مطبوخة في الفرن الحجري مع صلصة سرية وتقدم في صحن ذهبي", en: "Meat tikka cooked in stone oven with secret sauce, served in golden dish" },
+                        prices: [
+                            { size: { ar: "طبق فردي", en: "Single Dish" }, price: 32 },
+                            { size: { ar: "طبق عائلي", en: "Family Dish" }, price: 60 }
+                        ],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "صفيحة لحم عينتابي الذهبية", en: "Golden Aintabi Meat Sfeeha" }, 
+                        description: { ar: "صفيحة لحم على الطريقة العينتابية الأصلية محضرة بعجينة خاصة وتقدم مع خلطة سرية", en: "Meat sfeeha in original Aintabi style with special dough and secret mixture" },
+                        prices: [
+                            { size: { ar: "قطعة", en: "Piece" }, price: 8 },
+                            { size: { ar: "نصف دزينة", en: "Half Dozen" }, price: 45 },
+                            { size: { ar: "دزينة", en: "Dozen" }, price: 85 }
+                        ],
+                        special: true
+                    }
+                ]
+            },
+            appetizers: {
+                title: { ar: "مقبلات الذواقة", en: "Gourmet Appetizers" },
+                subtitle: { ar: "مقبلات عراقية أصلية مع لمسات عصرية", en: "Original Iraqi appetizers with modern touches" },
+                icon: "fa-seedling",
+                items: [
+                    { 
+                        name: { ar: "متبل شوي دار الإمبراطوري", en: "Imperial Shawi Dar Mutabbal" }, 
+                        description: { ar: "متبل باذنجان محضر من باذنجان عضوي مشوي على الفحم مع طحينة خاصة وزيت زيتون بكر", en: "Eggplant dip prepared from organic eggplant grilled on charcoal with special tahini and extra virgin olive oil" },
+                        prices: [
+                            { size: { ar: "صغير", en: "Small" }, price: 12 },
+                            { size: { ar: "كبير", en: "Large" }, price: 22 }
+                        ],
+                        special: true
+                    },
+                    { 
+                        name: { ar: "بابا غنوج الذهبي", en: "Golden Baba Ghanoush" }, 
+                        description: { ar: "سلطة باذنجان مشوي مع طماطم عضوية وبقدونس طازج وتوابل سرية", en: "Grilled eggplant salad with organic tomatoes, fresh parsley and secret spices" },
+                        prices: [
+                            { size: { ar: "صغير", en: "Small" }, price: 12 },
+                            { size: { ar: "كبير", en: "Large" }, price: 22 }
+                        ],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "حمص شوي دار الفاخر", en: "Premium Shawi Dar Hummus" }, 
+                        description: { ar: "حمص محضر من حبوب عضوية مع طحينة خاصة وزيت زيتون بكر وليمون عضوي", en: "Hummus prepared from organic chickpeas with special tahini, extra virgin olive oil and organic lemon" },
+                        prices: [
+                            { size: { ar: "صغير", en: "Small" }, price: 10 },
+                            { size: { ar: "كبير", en: "Large" }, price: 18 }
+                        ],
+                        special: true
+                    },
+                    { 
+                        name: { ar: "كبة مقلية ذهبية", en: "Golden Fried Kibbeh" }, 
+                        description: { ar: "كبة مقلية محشوة بلحم عضوي وصنوبر محمص وحشوة سرية", en: "Fried kibbeh stuffed with organic meat, roasted pine nuts and secret filling" },
+                        prices: [
+                            { size: { ar: "قطعة", en: "Piece" }, price: 7 },
+                            { size: { ar: "نصف دزينة", en: "Half Dozen" }, price: 40 },
+                            { size: { ar: "دزينة", en: "Dozen" }, price: 75 }
+                        ],
+                        special: false
+                    }
+                ]
+            },
+            sandwiches: {
+                title: { ar: "سندويشات الذواقة", en: "Gourmet Sandwiches" },
+                subtitle: { ar: "سندويشات فاخرة محضرة من مكونات عضوية", en: "Premium sandwiches prepared from organic ingredients" },
+                icon: "fa-burger",
+                items: [
+                    { 
+                        name: { ar: "سندويش كباب لحم الإمبراطوري", en: "Imperial Meat Kebab Sandwich" }, 
+                        description: { ar: "سندويش كباب لحم فاخر مع خضار عضوية وصلصة سرية في خبز خاص", en: "Premium meat kebab sandwich with organic vegetables and secret sauce in special bread" },
+                        prices: [
+                            { size: { ar: "سندويش", en: "Sandwich" }, price: 18 }
+                        ],
+                        special: true
+                    },
+                    { 
+                        name: { ar: "سندويش تكة لحم الذهبي", en: "Golden Meat Tikka Sandwich" }, 
+                        description: { ar: "سندويش تكة لحم مع صلصة طحينة خاصة وبصل أحمر عضوي في خبز أسمر خاص", en: "Meat tikka sandwich with special tahini sauce and organic red onion in special brown bread" },
+                        prices: [
+                            { size: { ar: "سندويش", en: "Sandwich" }, price: 18 }
+                        ],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "سندويش كبدة فاخر", en: "Premium Liver Sandwich" }, 
+                        description: { ar: "سندويش كبدة مشوية مع بصل ذهبي وليمون عضوي في خبز توست خاص", en: "Grilled liver sandwich with golden onions and organic lemon in special toast bread" },
+                        prices: [
+                            { size: { ar: "سندويش", en: "Sandwich" }, price: 16 }
+                        ],
+                        special: false
+                    }
+                ]
+            },
+            salads: {
+                title: { ar: "سلطات عضوية", en: "Organic Salads" },
+                subtitle: { ar: "سلطات طازجة من خضار عضوية مع تتبيلات خاصة", en: "Fresh salads from organic vegetables with special dressings" },
+                icon: "fa-leaf",
+                items: [
+                    { 
+                        name: { ar: "سلطة فتوش الإمبراطورية", en: "Imperial Fattoush Salad" }, 
+                        description: { ar: "سلطة فتوش تقليدية مع خضار عضوية وخبز مقلي خاص وتتبيلة سرية", en: "Traditional fattoush salad with organic vegetables, special fried bread and secret dressing" },
+                        prices: [
+                            { size: { ar: "صغير", en: "Small" }, price: 15 },
+                            { size: { ar: "كبير", en: "Large" }, price: 28 }
+                        ],
+                        special: true
+                    },
+                    { 
+                        name: { ar: "سلطة موسمية عضوية", en: "Organic Seasonal Salad" }, 
+                        description: { ar: "سلطة خضار موسمية عضوية مع تتبيلة زيت زيتون وليمون خاصة", en: "Organic seasonal vegetable salad with special olive oil and lemon dressing" },
+                        prices: [
+                            { size: { ar: "صغير", en: "Small" }, price: 12 },
+                            { size: { ar: "كبير", en: "Large" }, price: 22 }
+                        ],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "سلطة جرجير وتوت", en: "Arugula and Berry Salad" }, 
+                        description: { ar: "سلطة جرجير عضوي مع توت طازج وجبنة فيتا وتتبيلة بلسميك خاصة", en: "Organic arugula salad with fresh berries, feta cheese and special balsamic dressing" },
+                        prices: [
+                            { size: { ar: "صغير", en: "Small" }, price: 18 },
+                            { size: { ar: "كبير", en: "Large" }, price: 34 }
+                        ],
+                        special: true
+                    }
+                ]
+            },
+            drinks: {
+                title: { ar: "مشروبات فاخرة", en: "Premium Drinks" },
+                subtitle: { ar: "مشروبات تقليدية وعصرية محضرة بعناية", en: "Traditional and modern drinks carefully prepared" },
+                icon: "fa-wine-glass",
+                items: [
+                    { 
+                        name: { ar: "لبن ماكينة عضوي", en: "Organic Yogurt Drink" }, 
+                        description: { ar: "لبن ماكينة عراقي تقليدي محضر من حليب عضوي مع نعناع طازج", en: "Traditional Iraqi yogurt drink prepared from organic milk with fresh mint" },
+                        prices: [
+                            { size: { ar: "كأس", en: "Glass" }, price: 8 },
+                            { size: { ar: "جركن", en: "Jug" }, price: 25 }
+                        ],
+                        special: true
+                    },
+                    { 
+                        name: { ar: "عصير رمان طبيعي", en: "Natural Pomegranate Juice" }, 
+                        description: { ar: "عصير رمان طبيعي 100% مع لمسة من النعناع الطازج", en: "100% natural pomegranate juice with touch of fresh mint" },
+                        prices: [
+                            { size: { ar: "كأس", en: "Glass" }, price: 10 },
+                            { size: { ar: "زجاجة", en: "Bottle" }, price: 35 }
+                        ],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "قهوة عراقية تقليدية", en: "Traditional Iraqi Coffee" }, 
+                        description: { ar: "قهوة عراقية تقليدية محضرة بطريقة أصلية مع هيل عضوي", en: "Traditional Iraqi coffee prepared in original method with organic cardamom" },
+                        prices: [
+                            { size: { ar: "فنجان", en: "Cup" }, price: 6 },
+                            { size: { ar: "ابريق", en: "Pot" }, price: 20 }
+                        ],
+                        special: true
+                    }
+                ]
+            }
+        };
+        
+        // Translations
+        const translations = {
+            ar: {
+                restaurantTitle: "<span>شوي</span> دار",
+                restaurantSubtitle: "تجربة فاخرة من المطبخ العراقي الأصيل، حيث تلتقي النكهات التقليدية مع لمسات العصرنة",
+                viewMenuBtn: "استعرض القائمة",
+                restaurantNameFooter: "شوي دار",
+                footerDescription: "نقدم لكم أشهى المأكولات العراقية التقليدية بأسلوب عصري وأناقة فاخرة. كل طبق يُحضّر بعناية فائقة باستخدام أفضل المكونات.",
+                contactTitle: "معلومات التواصل",
+                address: "بغداد، المنصور، شارع المتنبي",
+                phone: "+964 771 234 5678",
+                email: "info@shawidar.com",
+                hours: "يومياً من 12 ظهراً حتى 12 منتصف الليل",
+                locationTitle: "موقعنا",
+                locationText: "نقع في قلب العاصمة بغداد، في مكان يجمع بين الأصالة والحداثة. نرحب بكم في أي وقت لتجربة فريدة من نوعها.",
+                directionBtn: "احصل على الاتجاهات",
+                copyrightText: "© 2023 مطعم شوي دار. جميع الحقوق محفوظة.",
+                currency: "د.ع",
+                specialBadge: "الأكثر طلباً"
+            },
+            en: {
+                restaurantTitle: "<span>Shawi</span> Dar",
+                restaurantSubtitle: "A luxurious experience of authentic Iraqi cuisine, where traditional flavors meet modern touches",
+                viewMenuBtn: "View Menu",
+                restaurantNameFooter: "Shawi Dar",
+                footerDescription: "We serve the finest traditional Iraqi cuisine with modern style and luxurious elegance. Each dish is prepared with utmost care using the finest ingredients.",
+                contactTitle: "Contact Information",
+                address: "Baghdad, Al-Mansour, Al-Mutanabbi Street",
+                phone: "+964 771 234 5678",
+                email: "info@shawidar.com",
+                hours: "Daily from 12 PM to 12 AM",
+                locationTitle: "Our Location",
+                locationText: "Located in the heart of Baghdad, in a place that combines authenticity and modernity. We welcome you anytime for a unique experience.",
+                directionBtn: "Get Directions",
+                copyrightText: "© 2023 Shawi Dar Restaurant. All rights reserved.",
+                currency: "IQD",
+                specialBadge: "Most Popular"
+            }
+        };
+        
+        // App State
+        let currentLang = 'ar';
+        let darkMode = true;
+        
+        // DOM Elements
+        const splashScreen = document.getElementById('splashScreen');
+        const themeBtn = document.getElementById('themeBtn');
+        const langBtn = document.getElementById('langBtn');
+        const restaurantTitle = document.getElementById('restaurantTitle');
+        const restaurantSubtitle = document.getElementById('restaurantSubtitle');
+        const viewMenuBtn = document.getElementById('viewMenuBtn');
+        const navScroll = document.getElementById('navScroll');
+        const menuContent = document.getElementById('menuContent');
+        const scrollProgress = document.getElementById('scrollProgress');
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize AOS animations
+            AOS.init({
+                duration: 1000,
+                once: true,
+                offset: 100
+            });
+            
+            // Hide splash screen
+            setTimeout(() => {
+                splashScreen.classList.add('hidden');
+            }, 2000);
+            
+            // Set up event listeners
+            themeBtn.addEventListener('click', toggleTheme);
+            langBtn.addEventListener('click', toggleLanguage);
+            scrollProgress.addEventListener('click', scrollToTop);
+            
+            // Generate menu
+            generateMenuNav();
+            generateMenuContent();
+            
+            // Update translations
+            updateTranslations();
+            
+            // Set up scroll listener
+            setupScrollListener();
+        });
+        
+        // Toggle Theme
+        function toggleTheme() {
+            darkMode = !darkMode;
+            const icon = themeBtn.querySelector('i');
+            
+            if (darkMode) {
+                // Switch to dark mode
+                document.documentElement.style.setProperty('--primary', 'var(--gold)');
+                document.documentElement.style.setProperty('--secondary', 'var(--burgundy)');
+                document.documentElement.style.setProperty('--bg', 'var(--dark)');
+                document.documentElement.style.setProperty('--card-bg', 'var(--dark-light)');
+                document.documentElement.style.setProperty('--text', 'var(--cream)');
+                document.documentElement.style.setProperty('--text-secondary', 'var(--gold-light)');
+                document.documentElement.style.setProperty('--border', 'rgba(212, 175, 55, 0.3)');
+                
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            } else {
+                // Switch to light mode
+                document.documentElement.style.setProperty('--primary', 'var(--burgundy)');
+                document.documentElement.style.setProperty('--secondary', 'var(--gold)');
+                document.documentElement.style.setProperty('--bg', 'var(--cream)');
+                document.documentElement.style.setProperty('--card-bg', 'var(--white)');
+                document.documentElement.style.setProperty('--text', 'var(--dark)');
+                document.documentElement.style.setProperty('--text-secondary', 'var(--burgundy-light)');
+                document.documentElement.style.setProperty('--border', 'rgba(128, 0, 32, 0.2)');
+                
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            }
+        }
+        
+        // Toggle Language
+        function toggleLanguage() {
+            currentLang = currentLang === 'ar' ? 'en' : 'ar';
+            
+            if (currentLang === 'en') {
+                document.body.classList.add('english');
+                document.body.setAttribute('dir', 'ltr');
+                document.querySelectorAll('.rtl').forEach(el => {
+                    el.classList.remove('rtl');
+                });
+            } else {
+                document.body.classList.remove('english');
+                document.body.setAttribute('dir', 'rtl');
+                document.querySelectorAll('.control-panel, .scroll-progress').forEach(el => {
+                    el.classList.add('rtl');
+                });
+            }
+            
+            updateTranslations();
+            generateMenuNav();
+            generateMenuContent();
+            AOS.refresh(); // Refresh animations for new content
+        }
+        
+        // Update all translations
+        function updateTranslations() {
+            restaurantTitle.innerHTML = translations[currentLang].restaurantTitle;
+            restaurantSubtitle.textContent = translations[currentLang].restaurantSubtitle;
+            viewMenuBtn.textContent = translations[currentLang].viewMenuBtn;
+            
+            // Footer translations
+            document.getElementById('restaurantNameFooter').textContent = translations[currentLang].restaurantNameFooter;
+            document.getElementById('footerDescription').textContent = translations[currentLang].footerDescription;
+            document.getElementById('contactTitle').textContent = translations[currentLang].contactTitle;
+            document.getElementById('address').textContent = translations[currentLang].address;
+            document.getElementById('phone').textContent = translations[currentLang].phone;
+            document.getElementById('email').textContent = translations[currentLang].email;
+            document.getElementById('hours').textContent = translations[currentLang].hours;
+            document.getElementById('locationTitle').textContent = translations[currentLang].locationTitle;
+            document.getElementById('locationText').textContent = translations[currentLang].locationText;
+            document.getElementById('directionBtn').textContent = translations[currentLang].directionBtn;
+            document.getElementById('copyrightText').textContent = translations[currentLang].copyrightText;
+        }
+        
+        // Generate Menu Navigation
+        function generateMenuNav() {
+            navScroll.innerHTML = '';
+            
+            Object.keys(menuData).forEach(categoryId => {
+                const button = document.createElement('button');
+                button.className = 'nav-item';
+                button.textContent = menuData[categoryId].title[currentLang];
+                button.setAttribute('data-aos', 'fade-up');
+                button.setAttribute('data-aos-delay', Object.keys(menuData).indexOf(categoryId) * 100);
+                
+                button.addEventListener('click', () => {
+                    // Remove active class from all buttons
+                    document.querySelectorAll('.nav-item').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked button
+                    button.classList.add('active');
+                    
+                    // Scroll to section
+                    document.getElementById(`section-${categoryId}`).scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                });
+                
+                navScroll.appendChild(button);
+            });
+            
+            // Activate first button
+            if (navScroll.firstChild) {
+                setTimeout(() => {
+                    navScroll.firstChild.classList.add('active');
+                }, 100);
+            }
+        }
+        
+        // Generate Menu Content
+        function generateMenuContent() {
+            menuContent.innerHTML = '';
+            
+            Object.keys(menuData).forEach((categoryId, index) => {
+                const category = menuData[categoryId];
+                
+                const section = document.createElement('section');
+                section.id = `section-${categoryId}`;
+                section.className = 'menu-section';
+                
+                // Section header
+                const header = document.createElement('div');
+                header.className = 'section-header';
+                header.setAttribute('data-aos', 'fade-up');
+                
+                const title = document.createElement('h2');
+                title.className = 'section-title';
+                title.textContent = category.title[currentLang];
+                
+                const subtitle = document.createElement('p');
+                subtitle.className = 'section-subtitle';
+                subtitle.textContent = category.subtitle[currentLang];
+                
+                header.appendChild(title);
+                header.appendChild(subtitle);
+                section.appendChild(header);
+                
+                // Menu items
+                const row = document.createElement('div');
+                row.className = 'row';
+                
+                category.items.forEach((item, itemIndex) => {
+                    const col = document.createElement('div');
+                    col.className = 'col-lg-6';
+                    col.setAttribute('data-aos', 'fade-up');
+                    col.setAttribute('data-aos-delay', itemIndex * 100);
+                    
+                    const menuItem = document.createElement('div');
+                    menuItem.className = `menu-item ${item.special ? 'special-item' : ''}`;
+                    
+                    // Special badge
+                    if (item.special) {
+                        const badge = document.createElement('div');
+                        badge.className = 'special-badge';
+                        badge.textContent = translations[currentLang].specialBadge;
+                        menuItem.appendChild(badge);
+                    }
+                    
+                    // Item header
+                    const itemHeader = document.createElement('div');
+                    itemHeader.className = 'item-header';
+                    
+                    const itemName = document.createElement('h3');
+                    itemName.className = 'item-name';
+                    itemName.textContent = item.name[currentLang];
+                    
+                    const itemPrice = document.createElement('div');
+                    itemPrice.className = 'item-price';
+                    // Show first price as main price
+                    if (item.prices.length > 0) {
+                        itemPrice.textContent = `${item.prices[0].price} ${translations[currentLang].currency}`;
+                    }
+                    
+                    itemHeader.appendChild(itemName);
+                    itemHeader.appendChild(itemPrice);
+                    
+                    // Item description
+                    const itemDesc = document.createElement('p');
+                    itemDesc.className = 'item-description';
+                    itemDesc.textContent = item.description[currentLang];
+                    
+                    // Price variants
+                    const priceVariants = document.createElement('div');
+                    priceVariants.className = 'price-variants';
+                    
+                    item.prices.forEach(price => {
+                        const variant = document.createElement('div');
+                        variant.className = 'price-variant';
+                        
+                        const size = document.createElement('span');
+                        size.className = 'variant-size';
+                        size.textContent = price.size[currentLang];
+                        
+                        const priceValue = document.createElement('span');
+                        priceValue.className = 'variant-price';
+                        priceValue.textContent = `${price.price} ${translations[currentLang].currency}`;
+                        
+                        variant.appendChild(size);
+                        variant.appendChild(priceValue);
+                        priceVariants.appendChild(variant);
+                    });
+                    
+                    menuItem.appendChild(itemHeader);
+                    menuItem.appendChild(itemDesc);
+                    menuItem.appendChild(priceVariants);
+                    col.appendChild(menuItem);
+                    row.appendChild(col);
+                });
+                
+                section.appendChild(row);
+                menuContent.appendChild(section);
+            });
+        }
+        
+        // Scroll to top
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+        
+        // Set up scroll listener
+        function setupScrollListener() {
+            // Update active nav item on scroll
+            const sections = document.querySelectorAll('.menu-section');
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            window.addEventListener('scroll', () => {
+                // Show/hide scroll to top button
+                if (window.scrollY > 500) {
+                    scrollProgress.classList.add('show');
+                } else {
+                    scrollProgress.classList.remove('show');
+                }
+                
+                // Update active nav item
+                let current = '';
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - 150;
+                    const sectionHeight = section.clientHeight;
+                    
+                    if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+                        current = section.id.replace('section-', '');
+                    }
+                });
+                
+                navItems.forEach(item => {
+                    item.classList.remove('active');
+                    const categoryId = Object.keys(menuData).find(key => 
+                        menuData[key].title[currentLang] === item.textContent
+                    );
+                    
+                    if (categoryId === current) {
+                        item.classList.add('active');
+                    }
+                });
+            });
+        }
+    </script>
+</body>
+</html>
