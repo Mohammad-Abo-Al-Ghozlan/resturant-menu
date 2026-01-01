@@ -1,3 +1,4 @@
+<!-- MoDEV -->
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -413,6 +414,16 @@
             transform: rotate(-45deg);
         }
         
+        /* Category-specific colors */
+        .grilled-bg { background: linear-gradient(135deg, rgba(128, 0, 32, 0.1) 0%, transparent 50%); }
+        .oven-bg { background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, transparent 50%); }
+        .baked-bg { background: linear-gradient(135deg, rgba(165, 42, 42, 0.1) 0%, transparent 50%); }
+        .hot-app-bg { background: linear-gradient(135deg, rgba(220, 20, 60, 0.1) 0%, transparent 50%); }
+        .cold-app-bg { background: linear-gradient(135deg, rgba(30, 144, 255, 0.1) 0%, transparent 50%); }
+        .sandwich-bg { background: linear-gradient(135deg, rgba(50, 205, 50, 0.1) 0%, transparent 50%); }
+        .kartosh-bg { background: linear-gradient(135deg, rgba(255, 140, 0, 0.1) 0%, transparent 50%); }
+        .drinks-bg { background: linear-gradient(135deg, rgba(75, 0, 130, 0.1) 0%, transparent 50%); }
+        
         /* Decorative Elements */
         .ornament {
             position: absolute;
@@ -665,6 +676,19 @@
             0% { left: -30%; }
             100% { left: 100%; }
         }
+        
+        /* Grid Layout */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
@@ -702,7 +726,7 @@
                         تجربة فاخرة من المطبخ العراقي الأصيل، حيث تلتقي النكهات التقليدية مع لمسات العصرنة
                     </p>
                     <div class="mt-5">
-                        <a href="#menu" class="btn btn-lg px-5 py-3" style="background: var(--primary); color: var(--dark); font-weight: 600; border-radius: 30px; border: none;">
+                        <a href="#grilled" class="btn btn-lg px-5 py-3" style="background: var(--primary); color: var(--dark); font-weight: 600; border-radius: 30px; border: none;">
                             <i class="fas fa-utensils me-2"></i>
                             <span id="viewMenuBtn">استعرض القائمة</span>
                         </a>
@@ -775,7 +799,7 @@
                 </div>
             </div>
             <div class="copyright">
-                <p id="copyrightText">© 2023 مطعم شوي دار. جميع الحقوق محفوظة.</p>
+                <p id="copyrightText">© 2026 مطعم شوي دار. جميع الحقوق محفوظة.</p>
             </div>
         </div>
     </footer>
@@ -789,234 +813,600 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     
     <script>
-        // Menu Data
+        // Menu Data in the requested order
         const menuData = {
             grilled: {
-                title: { ar: "المشويات الفاخرة", en: "Premium Grilled Dishes" },
-                subtitle: { ar: "أشهى المشويات العراقية بطابع فاخر", en: "Finest Iraqi grilled dishes with premium touch" },
+                id: "grilled",
+                title: { ar: "المشويات", en: "Grilled Dishes" },
+                subtitle: { ar: "أشهى المشويات العراقية المشوية على الفحم", en: "Finest Iraqi dishes grilled on charcoal" },
                 icon: "fa-fire",
+                colorClass: "grilled-bg",
                 items: [
                     { 
-                        name: { ar: "كباب لحم شوي دار الإمبراطوري", en: "Imperial Shawi Dar Kebab" }, 
-                        description: { ar: "كباب لحم فاخر محضر من أفضل قطع اللحم مع مزيج سري من التوابل العراقية النادرة", en: "Premium kebab prepared from finest meat cuts with secret blend of rare Iraqi spices" },
+                        name: { ar: "كباب لحم شوي دار", en: "Shawi Dar Kebab" }, 
+                        description: { ar: "كباب لحم مميز بنكهة الشواء العراقي الأصيل", en: "Special meat kebab with authentic Iraqi grilled flavor" },
                         prices: [
-                            { size: { ar: "نفر", en: "Per Person" }, price: 45 },
-                            { size: { ar: "نص كيلو", en: "Half Kilo" }, price: 85 },
-                            { size: { ar: "كيلو", en: "Kilo" }, price: 165 }
+                            { size: { ar: "نفر", en: "Per Person" }, price: 35 },
+                            { size: { ar: "نص كيلو", en: "Half Kilo" }, price: 65 },
+                            { size: { ar: "كيلو", en: "Kilo" }, price: 130 }
                         ],
                         special: true
                     },
                     { 
-                        name: { ar: "مشكل شوي دار الذهبي", en: "Golden Shawi Dar Mixed Grill" }, 
-                        description: { ar: "تشكيلة فاخرة من أفضل المشويات العراقية تقدم على صحن ذهبي مزين", en: "Premium assortment of finest Iraqi grilled items served on golden decorated plate" },
+                        name: { ar: "مشكل شوي دار", en: "Shawi Dar Mixed Grill" }, 
+                        description: { ar: "مشكل من أفضل أنواع المشويات العراقية", en: "Mixed selection of premium Iraqi grilled items" },
                         prices: [
-                            { size: { ar: "نفر", en: "Per Person" }, price: 38 },
-                            { size: { ar: "نص كيلو", en: "Half Kilo" }, price: 75 },
-                            { size: { ar: "كيلو", en: "Kilo" }, price: 145 }
+                            { size: { ar: "نفر", en: "Per Person" }, price: 27 },
+                            { size: { ar: "نص كيلو", en: "Half Kilo" }, price: 52 },
+                            { size: { ar: "كيلو", en: "Kilo" }, price: 105 }
                         ],
                         special: false
                     },
                     { 
-                        name: { ar: "كباب فقع حايلي الملكي", en: "Royal Haili Truffle Kebab" }, 
-                        description: { ar: "كباب لحم مع فقع حايلي عراقي نادر محضر بطريقة خاصة توارثتها الأجيال", en: "Meat kebab with rare Iraqi Haili truffle prepared using special method passed through generations" },
+                        name: { ar: "مشكل لحم", en: "Mixed Meat Grill" }, 
+                        description: { ar: "تشكيلة لحم مشوية بأنواع مختلفة", en: "Assortment of different grilled meat types" },
                         prices: [
-                            { size: { ar: "نفر", en: "Per Person" }, price: 55 },
-                            { size: { ar: "نص كيلو", en: "Half Kilo" }, price: 105 },
-                            { size: { ar: "كيلو", en: "Kilo" }, price: 205 }
+                            { size: { ar: "نفر", en: "Per Person" }, price: 29 },
+                            { size: { ar: "نص كيلو", en: "Half Kilo" }, price: 58 },
+                            { size: { ar: "كيلو", en: "Kilo" }, price: 115 }
+                        ],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "مشكل دجاج", en: "Mixed Chicken Grill" }, 
+                        description: { ar: "تشكيلة دجاج مشوي بأنواع مختلفة", en: "Assortment of different grilled chicken types" },
+                        prices: [
+                            { size: { ar: "نفر", en: "Per Person" }, price: 27 },
+                            { size: { ar: "نص كيلو", en: "Half Kilo" }, price: 52 },
+                            { size: { ar: "كيلو", en: "Kilo" }, price: 105 }
+                        ],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "كباب عراقي", en: "Iraqi Kebab" }, 
+                        description: { ar: "كباب لحم على الطريقة العراقية الأصيلة", en: "Authentic Iraqi-style meat kebab" },
+                        prices: [
+                            { size: { ar: "نفر", en: "Per Person" }, price: 29 },
+                            { size: { ar: "نص كيلو", en: "Half Kilo" }, price: 58 },
+                            { size: { ar: "كيلو", en: "Kilo" }, price: 115 }
                         ],
                         special: true
                     },
                     { 
-                        name: { ar: "ريش اللحم البغدادي", en: "Baghdadi Skewered Meat" }, 
-                        description: { ar: "ريش لحم مشوي على الفحم الطبيعي بطريقة بغدادية أصلية مع تتبيلة سرية", en: "Skewered meat grilled on natural charcoal using original Baghdadi method with secret marinade" },
+                        name: { ar: "كباب فقع حايلي", en: "Haili Truffle Kebab" }, 
+                        description: { ar: "كباب لحم مع فقع حايلي مميز من العراق", en: "Meat kebab with special Iraqi Haili truffle" },
                         prices: [
-                            { size: { ar: "نفر", en: "Per Person" }, price: 42 },
-                            { size: { ar: "نص كيلو", en: "Half Kilo" }, price: 82 },
+                            { size: { ar: "نفر", en: "Per Person" }, price: 35 },
+                            { size: { ar: "نص كيلو", en: "Half Kilo" }, price: 70 },
+                            { size: { ar: "كيلو", en: "Kilo" }, price: 140 }
+                        ],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "كباب حساوي", en: "Hassawi Kebab" }, 
+                        description: { ar: "كباب لحم على الطريقة الحساوية المميزة", en: "Meat kebab in special Hassawi style" },
+                        prices: [
+                            { size: { ar: "نفر", en: "Per Person" }, price: 32 },
+                            { size: { ar: "نص كيلو", en: "Half Kilo" }, price: 60 },
+                            { size: { ar: "كيلو", en: "Kilo" }, price: 120 }
+                        ],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "كباب خشاش", en: "Khishash Kebab" }, 
+                        description: { ar: "كباب لحم مع خلطة خشاش مميزة", en: "Meat kebab with special Khishash mixture" },
+                        prices: [
+                            { size: { ar: "نفر", en: "Per Person" }, price: 35 },
+                            { size: { ar: "نص كيلو", en: "Half Kilo" }, price: 65 },
+                            { size: { ar: "كيلو", en: "Kilo" }, price: 130 }
+                        ],
+                        special: true
+                    },
+                    { 
+                        name: { ar: "كباب باذنجان", en: "Eggplant Kebab" }, 
+                        description: { ar: "كباب لحم مع شرائح الباذنجان المشوي", en: "Meat kebab with grilled eggplant slices" },
+                        prices: [
+                            { size: { ar: "نفر", en: "Per Person" }, price: 35 },
+                            { size: { ar: "نص كيلو", en: "Half Kilo" }, price: 65 },
+                            { size: { ar: "كيلو", en: "Kilo" }, price: 130 }
+                        ],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "ريش", en: "Rish (Skewered Meat)" }, 
+                        description: { ar: "ريش لحم مشوي على الفحم بطريقة تقليدية", en: "Skewered meat grilled on charcoal in traditional way" },
+                        prices: [
+                            { size: { ar: "نفر", en: "Per Person" }, price: 40 },
+                            { size: { ar: "نص كيلو", en: "Half Kilo" }, price: 80 },
                             { size: { ar: "كيلو", en: "Kilo" }, price: 160 }
                         ],
+                        special: true
+                    },
+                    { 
+                        name: { ar: "عرايس لحم", en: "Meat Arayes" }, 
+                        description: { ar: "عرايس لحم محشوة ومشوية على الفحم", en: "Stuffed meat arayes grilled on charcoal" },
+                        prices: [
+                            { size: { ar: "نفر", en: "Per Person" }, price: 29 },
+                            { size: { ar: "نص كيلو", en: "Half Kilo" }, price: 55 },
+                            { size: { ar: "كيلو", en: "Kilo" }, price: 115 }
+                        ],
                         special: false
+                    },
+                    { 
+                        name: { ar: "دجاج عالفحم", en: "Charcoal Chicken" }, 
+                        description: { ar: "دجاج كامل مشوي على الفحم مع بهارات مميزة", en: "Whole chicken grilled on charcoal with special spices" },
+                        prices: [
+                            { size: { ar: "نصف دجاجة", en: "Half Chicken" }, price: 22 },
+                            { size: { ar: "دجاجة كاملة", en: "Whole Chicken" }, price: 44 }
+                        ],
+                        special: true
                     }
                 ]
             },
             oven: {
-                title: { ar: "أطباق الفرن الملكية", en: "Royal Oven Dishes" },
-                subtitle: { ar: "أطباق تقليدية محضرة في فرن حجري خاص", en: "Traditional dishes prepared in special stone oven" },
-                icon: "fa-utensils",
+                id: "oven",
+                title: { ar: "طواجن الفرن", en: "Oven Stews" },
+                subtitle: { ar: "أطباق الفرن الشهية المحضرة بعناية", en: "Delicious oven stews carefully prepared" },
+                icon: "fa-temperature-high",
+                colorClass: "oven-bg",
                 items: [
                     { 
-                        name: { ar: "محموس لحم شوي دار الفاخر", en: "Premium Shawi Dar Meat Mahmoos" }, 
-                        description: { ar: "لحم محموس فاخر مع خضار عضوية وتوابل عراقية نادرة محضر في فرن حجري", en: "Premium oven-baked meat with organic vegetables and rare Iraqi spices prepared in stone oven" },
-                        prices: [
-                            { size: { ar: "طبق فردي", en: "Single Dish" }, price: 35 },
-                            { size: { ar: "طبق عائلي", en: "Family Dish" }, price: 65 }
-                        ],
+                        name: { ar: "محموس لحم", en: "Meat Mahmoos" }, 
+                        description: { ar: "لحم محموس مع الخضار والتوابل العراقية", en: "Oven-baked meat with Iraqi vegetables and spices" },
+                        prices: [{ size: { ar: "طبق", en: "Dish" }, price: 29 }],
                         special: true
                     },
                     { 
-                        name: { ar: "تكة فرن ذهبية", en: "Golden Oven Tika" }, 
-                        description: { ar: "تكة لحم مطبوخة في الفرن الحجري مع صلصة سرية وتقدم في صحن ذهبي", en: "Meat tikka cooked in stone oven with secret sauce, served in golden dish" },
-                        prices: [
-                            { size: { ar: "طبق فردي", en: "Single Dish" }, price: 32 },
-                            { size: { ar: "طبق عائلي", en: "Family Dish" }, price: 60 }
-                        ],
+                        name: { ar: "محموس لحم طماطم", en: "Meat & Tomato Mahmoos" }, 
+                        description: { ar: "لحم محموس مع صلصة الطماطم والبهارات", en: "Oven-baked meat with tomato sauce and spices" },
+                        prices: [{ size: { ar: "طبق", en: "Dish" }, price: 29 }],
                         special: false
                     },
                     { 
-                        name: { ar: "صفيحة لحم عينتابي الذهبية", en: "Golden Aintabi Meat Sfeeha" }, 
-                        description: { ar: "صفيحة لحم على الطريقة العينتابية الأصلية محضرة بعجينة خاصة وتقدم مع خلطة سرية", en: "Meat sfeeha in original Aintabi style with special dough and secret mixture" },
-                        prices: [
-                            { size: { ar: "قطعة", en: "Piece" }, price: 8 },
-                            { size: { ar: "نصف دزينة", en: "Half Dozen" }, price: 45 },
-                            { size: { ar: "دزينة", en: "Dozen" }, price: 85 }
-                        ],
+                        name: { ar: "محموس فقع", en: "Truffle Mahmoos" }, 
+                        description: { ar: "محموس مع الفقع العراقي الطازج", en: "Oven-baked dish with fresh Iraqi truffle" },
+                        prices: [{ size: { ar: "طبق", en: "Dish" }, price: 40 }],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "تكة فرن", en: "Oven Tika" }, 
+                        description: { ar: "تكة لحم مطبوخة في الفرن بطريقة تقليدية", en: "Meat tikka cooked in the oven in traditional way" },
+                        prices: [{ size: { ar: "طبق", en: "Dish" }, price: 29 }],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "تكة فرن طماطم", en: "Tomato Oven Tika" }, 
+                        description: { ar: "تكة فرن مع صلصة الطماطم والبهارات", en: "Oven tikka with tomato sauce and spices" },
+                        prices: [{ size: { ar: "طبق", en: "Dish" }, price: 29 }],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "تكة فرن فقع", en: "Truffle Oven Tika" }, 
+                        description: { ar: "تكة فرن مع الفقع العراقي الطازج", en: "Oven tikka with fresh Iraqi truffle" },
+                        prices: [{ size: { ar: "طبق", en: "Dish" }, price: 40 }],
+                        special: true
+                    },
+                    { 
+                        name: { ar: "تكة فرن دجاج", en: "Chicken Oven Tika" }, 
+                        description: { ar: "تكة دجاج مطبوخة في الفرن مع الخضار", en: "Chicken tikka cooked in oven with vegetables" },
+                        prices: [{ size: { ar: "طبق", en: "Dish" }, price: 29 }],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "كفتة طحينة", en: "Kofta with Tahini" }, 
+                        description: { ar: "كفتة لحم مع صلصة الطحينة المخبوزة في الفرن", en: "Meat kofta with tahini sauce baked in oven" },
+                        prices: [{ size: { ar: "طبق", en: "Dish" }, price: 29 }],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "محموس دجاج خضار", en: "Chicken & Vegetable Mahmoos" }, 
+                        description: { ar: "دجاج محموس مع خضار مشكلة في الفرن", en: "Oven-baked chicken with mixed vegetables" },
+                        prices: [{ size: { ar: "طبق", en: "Dish" }, price: 29 }],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "محموس دجاج خضار جبن", en: "Chicken, Vegetable & Cheese Mahmoos" }, 
+                        description: { ar: "دجاج محموس مع خضار وجبنة ذائبة", en: "Oven-baked chicken with vegetables and melted cheese" },
+                        prices: [{ size: { ar: "طبق", en: "Dish" }, price: 35 }],
                         special: true
                     }
                 ]
             },
-            appetizers: {
-                title: { ar: "مقبلات الذواقة", en: "Gourmet Appetizers" },
-                subtitle: { ar: "مقبلات عراقية أصلية مع لمسات عصرية", en: "Original Iraqi appetizers with modern touches" },
-                icon: "fa-seedling",
+            baked: {
+                id: "baked",
+                title: { ar: "مخبوزات الفرن", en: "Oven Baked" },
+                subtitle: { ar: "مخبوزات عراقية تقليدية من الفرن", en: "Traditional Iraqi baked goods from the oven" },
+                icon: "fa-bread-slice",
+                colorClass: "baked-bg",
                 items: [
                     { 
-                        name: { ar: "متبل شوي دار الإمبراطوري", en: "Imperial Shawi Dar Mutabbal" }, 
-                        description: { ar: "متبل باذنجان محضر من باذنجان عضوي مشوي على الفحم مع طحينة خاصة وزيت زيتون بكر", en: "Eggplant dip prepared from organic eggplant grilled on charcoal with special tahini and extra virgin olive oil" },
+                        name: { ar: "صفيحة لحم عينتابي", en: "Aintabi Meat Sfeeha" }, 
+                        description: { ar: "صفيحة لحم على الطريقة العينتابية العراقية", en: "Meat sfeeha in the Iraqi Aintabi style" },
                         prices: [
-                            { size: { ar: "صغير", en: "Small" }, price: 12 },
-                            { size: { ar: "كبير", en: "Large" }, price: 22 }
+                            { size: { ar: "نفر", en: "Per Person" }, price: 29 },
+                            { size: { ar: "نص كيلو", en: "Half Kilo" }, price: 58 },
+                            { size: { ar: "كيلو", en: "Kilo" }, price: 115 }
                         ],
                         special: true
                     },
                     { 
-                        name: { ar: "بابا غنوج الذهبي", en: "Golden Baba Ghanoush" }, 
-                        description: { ar: "سلطة باذنجان مشوي مع طماطم عضوية وبقدونس طازج وتوابل سرية", en: "Grilled eggplant salad with organic tomatoes, fresh parsley and secret spices" },
+                        name: { ar: "صفيحة دبس رمان", en: "Pomegranate Molasses Sfeeha" }, 
+                        description: { ar: "صفيحة لحم مع دبس الرمان والبهارات", en: "Meat sfeeha with pomegranate molasses and spices" },
                         prices: [
-                            { size: { ar: "صغير", en: "Small" }, price: 12 },
-                            { size: { ar: "كبير", en: "Large" }, price: 22 }
+                            { size: { ar: "نفر", en: "Per Person" }, price: 29 },
+                            { size: { ar: "نص كيلو", en: "Half Kilo" }, price: 58 },
+                            { size: { ar: "كيلو", en: "Kilo" }, price: 115 }
                         ],
                         special: false
                     },
                     { 
-                        name: { ar: "حمص شوي دار الفاخر", en: "Premium Shawi Dar Hummus" }, 
-                        description: { ar: "حمص محضر من حبوب عضوية مع طحينة خاصة وزيت زيتون بكر وليمون عضوي", en: "Hummus prepared from organic chickpeas with special tahini, extra virgin olive oil and organic lemon" },
+                        name: { ar: "مشحمية", en: "Mashhamiya" }, 
+                        description: { ar: "مخبوزات لحم مع البصل والبهارات", en: "Meat baked goods with onions and spices" },
                         prices: [
-                            { size: { ar: "صغير", en: "Small" }, price: 10 },
-                            { size: { ar: "كبير", en: "Large" }, price: 18 }
+                            { size: { ar: "نفر", en: "Per Person" }, price: 29 },
+                            { size: { ar: "نص كيلو", en: "Half Kilo" }, price: 58 },
+                            { size: { ar: "كيلو", en: "Kilo" }, price: 115 }
                         ],
-                        special: true
+                        special: false
                     },
                     { 
-                        name: { ar: "كبة مقلية ذهبية", en: "Golden Fried Kibbeh" }, 
-                        description: { ar: "كبة مقلية محشوة بلحم عضوي وصنوبر محمص وحشوة سرية", en: "Fried kibbeh stuffed with organic meat, roasted pine nuts and secret filling" },
+                        name: { ar: "محمرة", en: "Muhammara" }, 
+                        description: { ar: "مخبوزات لحم محمرة مع بهارات خاصة", en: "Baked meat goods with special spices" },
                         prices: [
-                            { size: { ar: "قطعة", en: "Piece" }, price: 7 },
-                            { size: { ar: "نصف دزينة", en: "Half Dozen" }, price: 40 },
-                            { size: { ar: "دزينة", en: "Dozen" }, price: 75 }
+                            { size: { ar: "نفر", en: "Per Person" }, price: 25 },
+                            { size: { ar: "نص كيلو", en: "Half Kilo" }, price: 50 },
+                            { size: { ar: "كيلو", en: "Kilo" }, price: 100 }
                         ],
                         special: false
                     }
                 ]
             },
-            sandwiches: {
-                title: { ar: "سندويشات الذواقة", en: "Gourmet Sandwiches" },
-                subtitle: { ar: "سندويشات فاخرة محضرة من مكونات عضوية", en: "Premium sandwiches prepared from organic ingredients" },
-                icon: "fa-burger",
+            hotApp: {
+                id: "hotApp",
+                title: { ar: "مقبلات ساخنة", en: "Hot Appetizers" },
+                subtitle: { ar: "مقبلات ساخنة لبداية وجبة دافئة", en: "Hot appetizers for a warm meal start" },
+                icon: "fa-pepper-hot",
+                colorClass: "hot-app-bg",
                 items: [
                     { 
-                        name: { ar: "سندويش كباب لحم الإمبراطوري", en: "Imperial Meat Kebab Sandwich" }, 
-                        description: { ar: "سندويش كباب لحم فاخر مع خضار عضوية وصلصة سرية في خبز خاص", en: "Premium meat kebab sandwich with organic vegetables and secret sauce in special bread" },
-                        prices: [
-                            { size: { ar: "سندويش", en: "Sandwich" }, price: 18 }
-                        ],
+                        name: { ar: "كبة مقلية", en: "Fried Kibbeh" }, 
+                        description: { ar: "كبة مقلية بحشوة اللحم والصنوبر", en: "Fried kibbeh with meat and pine nuts filling" },
+                        prices: [{ size: { ar: "حبة", en: "Piece" }, price: 5 }],
                         special: true
                     },
                     { 
-                        name: { ar: "سندويش تكة لحم الذهبي", en: "Golden Meat Tikka Sandwich" }, 
-                        description: { ar: "سندويش تكة لحم مع صلصة طحينة خاصة وبصل أحمر عضوي في خبز أسمر خاص", en: "Meat tikka sandwich with special tahini sauce and organic red onion in special brown bread" },
-                        prices: [
-                            { size: { ar: "سندويش", en: "Sandwich" }, price: 18 }
-                        ],
+                        name: { ar: "كبة مشوية", en: "Grilled Kibbeh" }, 
+                        description: { ar: "كبة مشوية على الفحم مع بهارات خاصة", en: "Grilled kibbeh on charcoal with special spices" },
+                        prices: [{ size: { ar: "حبة", en: "Piece" }, price: 8 }],
                         special: false
                     },
                     { 
-                        name: { ar: "سندويش كبدة فاخر", en: "Premium Liver Sandwich" }, 
-                        description: { ar: "سندويش كبدة مشوية مع بصل ذهبي وليمون عضوي في خبز توست خاص", en: "Grilled liver sandwich with golden onions and organic lemon in special toast bread" },
-                        prices: [
-                            { size: { ar: "سندويش", en: "Sandwich" }, price: 16 }
-                        ],
+                        name: { ar: "بطاط حارة", en: "Spicy Potatoes" }, 
+                        description: { ar: "بطاطس مقلية مع صلصة حارة وبهارات", en: "Fried potatoes with spicy sauce and spices" },
+                        prices: [{ size: { ar: "طبق", en: "Dish" }, price: 15 }],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "حمص باللحم", en: "Hummus with Meat" }, 
+                        description: { ar: "حمص مع لحم مفروم وبصل محمر", en: "Hummus with minced meat and fried onions" },
+                        prices: [{ size: { ar: "طبق", en: "Dish" }, price: 20 }],
+                        special: true
+                    },
+                    { 
+                        name: { ar: "متبل لحم", en: "Meat Mutabbal" }, 
+                        description: { ar: "متبل باذنجان مع لحم مفروم وتوابل", en: "Eggplant dip with minced meat and spices" },
+                        prices: [{ size: { ar: "طبق", en: "Dish" }, price: 20 }],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "بطاط مقلية", en: "French Fries" }, 
+                        description: { ar: "بطاطس مقلية مقرمشة مع بهارات خاصة", en: "Crispy fried potatoes with special spices" },
+                        prices: [{ size: { ar: "طبق", en: "Dish" }, price: 10 }],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "شوربة عدس", en: "Lentil Soup" }, 
+                        description: { ar: "شوربة عدس تقليدية مع توابل دافئة", en: "Traditional lentil soup with warm spices" },
+                        prices: [{ size: { ar: "طبق", en: "Dish" }, price: 5 }],
                         special: false
                     }
                 ]
             },
-            salads: {
-                title: { ar: "سلطات عضوية", en: "Organic Salads" },
-                subtitle: { ar: "سلطات طازجة من خضار عضوية مع تتبيلات خاصة", en: "Fresh salads from organic vegetables with special dressings" },
-                icon: "fa-leaf",
+            coldApp: {
+                id: "coldApp",
+                title: { ar: "مقبلات باردة", en: "Cold Appetizers" },
+                subtitle: { ar: "مقبلات باردة منعشة لبداية الوجبة", en: "Refreshing cold appetizers to start your meal" },
+                icon: "fa-snowflake",
+                colorClass: "cold-app-bg",
                 items: [
                     { 
-                        name: { ar: "سلطة فتوش الإمبراطورية", en: "Imperial Fattoush Salad" }, 
-                        description: { ar: "سلطة فتوش تقليدية مع خضار عضوية وخبز مقلي خاص وتتبيلة سرية", en: "Traditional fattoush salad with organic vegetables, special fried bread and secret dressing" },
+                        name: { ar: "متبل", en: "Mutabbal" }, 
+                        description: { ar: "متبل باذنجان مع الطحينة وزيت الزيتون", en: "Eggplant dip with tahini and olive oil" },
+                        prices: [
+                            { size: { ar: "صغير", en: "Small" }, price: 7 },
+                            { size: { ar: "وسط", en: "Medium" }, price: 8 },
+                            { size: { ar: "كبير", en: "Large" }, price: 10 }
+                        ],
+                        special: true
+                    },
+                    { 
+                        name: { ar: "بابا غنوج", en: "Baba Ghanoush" }, 
+                        description: { ar: "سلطة باذنجان مشوي مع الطماطم والبقدونس", en: "Grilled eggplant salad with tomatoes and parsley" },
+                        prices: [
+                            { size: { ar: "صغير", en: "Small" }, price: 7 },
+                            { size: { ar: "وسط", en: "Medium" }, price: 8 },
+                            { size: { ar: "كبير", en: "Large" }, price: 10 }
+                        ],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "محمرة جوز", en: "Walnut Muhammara" }, 
+                        description: { ar: "محمرة مع الجوز والفلفل الأحمر", en: "Muhammara with walnuts and red pepper" },
+                        prices: [
+                            { size: { ar: "صغير", en: "Small" }, price: 7 },
+                            { size: { ar: "وسط", en: "Medium" }, price: 8 },
+                            { size: { ar: "كبير", en: "Large" }, price: 10 }
+                        ],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "لبن بخيار", en: "Yogurt with Cucumber" }, 
+                        description: { ar: "لبن مع خيار ونعناع طازج", en: "Yogurt with cucumber and fresh mint" },
+                        prices: [
+                            { size: { ar: "صغير", en: "Small" }, price: 7 },
+                            { size: { ar: "وسط", en: "Medium" }, price: 8 },
+                            { size: { ar: "كبير", en: "Large" }, price: 10 }
+                        ],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "زهرة طحينة", en: "Tahini with Cauliflower" }, 
+                        description: { ar: "طحينة مع زهرة مطبوخة وليمون", en: "Tahini with cooked cauliflower and lemon" },
+                        prices: [
+                            { size: { ar: "صغير", en: "Small" }, price: 7 },
+                            { size: { ar: "وسط", en: "Medium" }, price: 8 },
+                            { size: { ar: "كبير", en: "Large" }, price: 10 }
+                        ],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "متبل شمندار", en: "Shmandar Mutabbal" }, 
+                        description: { ar: "متبل باذنجان مع الشمندار العراقي", en: "Eggplant dip with Iraqi shmandar" },
+                        prices: [
+                            { size: { ar: "صغير", en: "Small" }, price: 7 },
+                            { size: { ar: "وسط", en: "Medium" }, price: 8 },
+                            { size: { ar: "كبير", en: "Large" }, price: 10 }
+                        ],
+                        special: true
+                    },
+                    { 
+                        name: { ar: "كريم ثوم", en: "Garlic Cream" }, 
+                        description: { ar: "كريم ثوم مع لبن وزيت زيتون", en: "Garlic cream with yogurt and olive oil" },
+                        prices: [
+                            { size: { ar: "صغير", en: "Small" }, price: 7 },
+                            { size: { ar: "وسط", en: "Medium" }, price: 8 },
+                            { size: { ar: "كبير", en: "Large" }, price: 10 }
+                        ],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "سلطة ملفوف", en: "Cabbage Salad" }, 
+                        description: { ar: "سلطة ملفوف مع الجزر والمايونيز", en: "Cabbage salad with carrot and mayonnaise" },
+                        prices: [
+                            { size: { ar: "صغير", en: "Small" }, price: 7 },
+                            { size: { ar: "وسط", en: "Medium" }, price: 8 },
+                            { size: { ar: "كبير", en: "Large" }, price: 10 }
+                        ],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "حمص", en: "Hummus" }, 
+                        description: { ar: "حمص بالطحينة وزيت الزيتون والليمون", en: "Chickpea dip with tahini, olive oil and lemon" },
+                        prices: [
+                            { size: { ar: "صغير", en: "Small" }, price: 7 },
+                            { size: { ar: "وسط", en: "Medium" }, price: 8 },
+                            { size: { ar: "كبير", en: "Large" }, price: 10 }
+                        ],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "مقبلات مشكل", en: "Mixed Appetizers" }, 
+                        description: { ar: "تشكيلة من المقبلات العراقية الباردة", en: "Assortment of Iraqi cold appetizers" },
                         prices: [
                             { size: { ar: "صغير", en: "Small" }, price: 15 },
-                            { size: { ar: "كبير", en: "Large" }, price: 28 }
+                            { size: { ar: "كبير", en: "Large" }, price: 20 }
                         ],
+                        special: true
+                    }
+                ]
+            },
+            sandwich: {
+                id: "sandwich",
+                title: { ar: "سندويشات", en: "Sandwiches" },
+                subtitle: { ar: "سندويشات سريعة ولذيذة", en: "Quick and delicious sandwiches" },
+                icon: "fa-burger",
+                colorClass: "sandwich-bg",
+                items: [
+                    { 
+                        name: { ar: "سندويش كباب لحم", en: "Meat Kebab Sandwich" }, 
+                        description: { ar: "سندويش كباب لحم مع الخضار والصلصة", en: "Meat kebab sandwich with vegetables and sauce" },
+                        prices: [{ size: { ar: "سندويش", en: "Sandwich" }, price: 15 }],
                         special: true
                     },
                     { 
-                        name: { ar: "سلطة موسمية عضوية", en: "Organic Seasonal Salad" }, 
-                        description: { ar: "سلطة خضار موسمية عضوية مع تتبيلة زيت زيتون وليمون خاصة", en: "Organic seasonal vegetable salad with special olive oil and lemon dressing" },
-                        prices: [
-                            { size: { ar: "صغير", en: "Small" }, price: 12 },
-                            { size: { ar: "كبير", en: "Large" }, price: 22 }
-                        ],
+                        name: { ar: "سندويش كباب دجاج", en: "Chicken Kebab Sandwich" }, 
+                        description: { ar: "سندويش كباب دجاج مشوي مع الخضار", en: "Grilled chicken kebab sandwich with vegetables" },
+                        prices: [{ size: { ar: "سندويش", en: "Sandwich" }, price: 15 }],
                         special: false
                     },
                     { 
-                        name: { ar: "سلطة جرجير وتوت", en: "Arugula and Berry Salad" }, 
-                        description: { ar: "سلطة جرجير عضوي مع توت طازج وجبنة فيتا وتتبيلة بلسميك خاصة", en: "Organic arugula salad with fresh berries, feta cheese and special balsamic dressing" },
-                        prices: [
-                            { size: { ar: "صغير", en: "Small" }, price: 18 },
-                            { size: { ar: "كبير", en: "Large" }, price: 34 }
-                        ],
+                        name: { ar: "سندويش تكة لحم", en: "Meat Tikka Sandwich" }, 
+                        description: { ar: "سندويش تكة لحم مع الطحينة والبصل", en: "Meat tikka sandwich with tahini and onions" },
+                        prices: [{ size: { ar: "سندويش", en: "Sandwich" }, price: 15 }],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "سندويش تكة دجاج", en: "Chicken Tikka Sandwich" }, 
+                        description: { ar: "سندويش تكة دجاج مع الخضار والصلصة", en: "Chicken tikka sandwich with vegetables and sauce" },
+                        prices: [{ size: { ar: "سندويش", en: "Sandwich" }, price: 15 }],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "سندويش كبدة", en: "Liver Sandwich" }, 
+                        description: { ar: "سندويش كبدة مشوية مع البصل والليمون", en: "Grilled liver sandwich with onions and lemon" },
+                        prices: [{ size: { ar: "سندويش", en: "Sandwich" }, price: 15 }],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "سندويش معلاق", en: "Mallak Sandwich" }, 
+                        description: { ar: "سندويش معلاق لحم مع الخضار", en: "Mallak meat sandwich with vegetables" },
+                        prices: [{ size: { ar: "سندويش", en: "Sandwich" }, price: 15 }],
+                        special: false
+                    }
+                ]
+            },
+            kartosh: {
+                id: "kartosh",
+                title: { ar: "الخرطوشة", en: "Single Items" },
+                subtitle: { ar: "أصناف مفردة للطلب المنفرد", en: "Single items for individual orders" },
+                icon: "fa-drumstick-bite",
+                colorClass: "kartosh-bg",
+                items: [
+                    { 
+                        name: { ar: "كباب لحم", en: "Meat Kebab" }, 
+                        description: { ar: "كباب لحم منفرد للطلب", en: "Single meat kebab for order" },
+                        prices: [{ size: { ar: "حبة", en: "Piece" }, price: 8 }],
                         special: true
+                    },
+                    { 
+                        name: { ar: "كباب دجاج", en: "Chicken Kebab" }, 
+                        description: { ar: "كباب دجاج منفرد للطلب", en: "Single chicken kebab for order" },
+                        prices: [{ size: { ar: "حبة", en: "Piece" }, price: 8 }],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "تكة لحم", en: "Meat Tikka" }, 
+                        description: { ar: "تكة لحم منفردة للطلب", en: "Single meat tikka for order" },
+                        prices: [{ size: { ar: "حبة", en: "Piece" }, price: 8 }],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "تكة دجاج", en: "Chicken Tikka" }, 
+                        description: { ar: "تكة دجاج منفردة للطلب", en: "Single chicken tikka for order" },
+                        prices: [{ size: { ar: "حبة", en: "Piece" }, price: 8 }],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "كبدة", en: "Liver" }, 
+                        description: { ar: "كبدة مشوية منفردة للطلب", en: "Single grilled liver for order" },
+                        prices: [{ size: { ar: "حبة", en: "Piece" }, price: 8 }],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "معلاق", en: "Mallak" }, 
+                        description: { ar: "معلاق لحم منفرد للطلب", en: "Single mallak meat for order" },
+                        prices: [{ size: { ar: "حبة", en: "Piece" }, price: 8 }],
+                        special: false
                     }
                 ]
             },
             drinks: {
-                title: { ar: "مشروبات فاخرة", en: "Premium Drinks" },
-                subtitle: { ar: "مشروبات تقليدية وعصرية محضرة بعناية", en: "Traditional and modern drinks carefully prepared" },
-                icon: "fa-wine-glass",
+                id: "drinks",
+                title: { ar: "المشروبات", en: "Drinks" },
+                subtitle: { ar: "مشروبات باردة ومنعشة", en: "Cold and refreshing drinks" },
+                icon: "fa-glass-water",
+                colorClass: "drinks-bg",
                 items: [
                     { 
-                        name: { ar: "لبن ماكينة عضوي", en: "Organic Yogurt Drink" }, 
-                        description: { ar: "لبن ماكينة عراقي تقليدي محضر من حليب عضوي مع نعناع طازج", en: "Traditional Iraqi yogurt drink prepared from organic milk with fresh mint" },
-                        prices: [
-                            { size: { ar: "كأس", en: "Glass" }, price: 8 },
-                            { size: { ar: "جركن", en: "Jug" }, price: 25 }
-                        ],
-                        special: true
-                    },
-                    { 
-                        name: { ar: "عصير رمان طبيعي", en: "Natural Pomegranate Juice" }, 
-                        description: { ar: "عصير رمان طبيعي 100% مع لمسة من النعناع الطازج", en: "100% natural pomegranate juice with touch of fresh mint" },
-                        prices: [
-                            { size: { ar: "كأس", en: "Glass" }, price: 10 },
-                            { size: { ar: "زجاجة", en: "Bottle" }, price: 35 }
-                        ],
+                        name: { ar: "بيبسي", en: "Pepsi" }, 
+                        description: { ar: "مشروب بيبسي غازي", en: "Pepsi carbonated soft drink" },
+                        prices: [{ size: { ar: "عبوة", en: "Can" }, price: 3 }],
                         special: false
                     },
                     { 
-                        name: { ar: "قهوة عراقية تقليدية", en: "Traditional Iraqi Coffee" }, 
-                        description: { ar: "قهوة عراقية تقليدية محضرة بطريقة أصلية مع هيل عضوي", en: "Traditional Iraqi coffee prepared in original method with organic cardamom" },
-                        prices: [
-                            { size: { ar: "فنجان", en: "Cup" }, price: 6 },
-                            { size: { ar: "ابريق", en: "Pot" }, price: 20 }
-                        ],
+                        name: { ar: "بيبسي دايت", en: "Diet Pepsi" }, 
+                        description: { ar: "بيبسي دايت بدون سكر", en: "Diet Pepsi without sugar" },
+                        prices: [{ size: { ar: "عبوة", en: "Can" }, price: 3 }],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "سفن", en: "7Up" }, 
+                        description: { ar: "مشروب سفن غازي", en: "7Up carbonated soft drink" },
+                        prices: [{ size: { ar: "عبوة", en: "Can" }, price: 3 }],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "سفن دايت", en: "Diet 7Up" }, 
+                        description: { ar: "سفن دايت بدون سكر", en: "Diet 7Up without sugar" },
+                        prices: [{ size: { ar: "عبوة", en: "Can" }, price: 3 }],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "ميراند برتقال", en: "Miranda Orange" }, 
+                        description: { ar: "مشروب ميراند بنكهة البرتقال", en: "Miranda orange flavored drink" },
+                        prices: [{ size: { ar: "عبوة", en: "Can" }, price: 3 }],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "ديو", en: "Dew" }, 
+                        description: { ar: "مشروب ديو غازي", en: "Dew carbonated drink" },
+                        prices: [{ size: { ar: "عبوة", en: "Can" }, price: 3 }],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "كينزا كولا", en: "Kenza Cola" }, 
+                        description: { ar: "مشروب كينزا كولا غازي", en: "Kenza cola carbonated drink" },
+                        prices: [{ size: { ar: "عبوة", en: "Can" }, price: 3 }],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "كينزا كولا دايت", en: "Diet Kenza Cola" }, 
+                        description: { ar: "كينزا كولا دايت بدون سكر", en: "Diet Kenza cola without sugar" },
+                        prices: [{ size: { ar: "عبوة", en: "Can" }, price: 3 }],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "بيبسي عائلي", en: "Family Pepsi" }, 
+                        description: { ar: "عبوة بيبسي عائلية كبيرة", en: "Large family size Pepsi bottle" },
+                        prices: [{ size: { ar: "عبوة", en: "Bottle" }, price: 10 }],
                         special: true
+                    },
+                    { 
+                        name: { ar: "سفن عائلي", en: "Family 7Up" }, 
+                        description: { ar: "عبوة سفن عائلية كبيرة", en: "Large family size 7Up bottle" },
+                        prices: [{ size: { ar: "عبوة", en: "Bottle" }, price: 10 }],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "حمضيات عائلي", en: "Family Citrus" }, 
+                        description: { ar: "عبوة مشروب حمضيات عائلية", en: "Large family size citrus drink bottle" },
+                        prices: [{ size: { ar: "عبوة", en: "Bottle" }, price: 10 }],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "لبن ماكينة صغير", en: "Small Yogurt Drink" }, 
+                        description: { ar: "لبن ماكينة عراقي تقليدي صغير", en: "Small traditional Iraqi yogurt drink" },
+                        prices: [{ size: { ar: "كأس", en: "Glass" }, price: 5 }],
+                        special: true
+                    },
+                    { 
+                        name: { ar: "جركن لبن كبير", en: "Large Yogurt Jug" }, 
+                        description: { ar: "جركن لبن عراقي تقليدي كبير", en: "Large jug of traditional Iraqi yogurt drink" },
+                        prices: [{ size: { ar: "جركن", en: "Jug" }, price: 15 }],
+                        special: false
+                    },
+                    { 
+                        name: { ar: "رز أبيض", en: "White Rice" }, 
+                        description: { ar: "طبق رز أبيض عراقي", en: "Plate of Iraqi white rice" },
+                        prices: [{ size: { ar: "طبق", en: "Plate" }, price: 8 }],
+                        special: false
                     }
                 ]
             }
         };
+
+        // Category order as requested
+        const categoryOrder = ['grilled', 'oven', 'baked', 'hotApp', 'coldApp', 'sandwich', 'kartosh', 'drinks'];
         
         // Translations
         const translations = {
@@ -1183,12 +1573,13 @@
         function generateMenuNav() {
             navScroll.innerHTML = '';
             
-            Object.keys(menuData).forEach(categoryId => {
+            categoryOrder.forEach((categoryId, index) => {
+                const category = menuData[categoryId];
                 const button = document.createElement('button');
                 button.className = 'nav-item';
-                button.textContent = menuData[categoryId].title[currentLang];
+                button.textContent = category.title[currentLang];
                 button.setAttribute('data-aos', 'fade-up');
-                button.setAttribute('data-aos-delay', Object.keys(menuData).indexOf(categoryId) * 100);
+                button.setAttribute('data-aos-delay', index * 100);
                 
                 button.addEventListener('click', () => {
                     // Remove active class from all buttons
@@ -1221,7 +1612,7 @@
         function generateMenuContent() {
             menuContent.innerHTML = '';
             
-            Object.keys(menuData).forEach((categoryId, index) => {
+            categoryOrder.forEach((categoryId, index) => {
                 const category = menuData[categoryId];
                 
                 const section = document.createElement('section');
@@ -1245,18 +1636,16 @@
                 header.appendChild(subtitle);
                 section.appendChild(header);
                 
-                // Menu items
-                const row = document.createElement('div');
-                row.className = 'row';
+                // Menu items in grid layout
+                const grid = document.createElement('div');
+                grid.className = 'menu-grid';
                 
                 category.items.forEach((item, itemIndex) => {
-                    const col = document.createElement('div');
-                    col.className = 'col-lg-6';
-                    col.setAttribute('data-aos', 'fade-up');
-                    col.setAttribute('data-aos-delay', itemIndex * 100);
-                    
                     const menuItem = document.createElement('div');
                     menuItem.className = `menu-item ${item.special ? 'special-item' : ''}`;
+                    menuItem.style.background = category.colorClass;
+                    menuItem.setAttribute('data-aos', 'fade-up');
+                    menuItem.setAttribute('data-aos-delay', itemIndex * 50);
                     
                     // Special badge
                     if (item.special) {
@@ -1313,11 +1702,10 @@
                     menuItem.appendChild(itemHeader);
                     menuItem.appendChild(itemDesc);
                     menuItem.appendChild(priceVariants);
-                    col.appendChild(menuItem);
-                    row.appendChild(col);
+                    grid.appendChild(menuItem);
                 });
                 
-                section.appendChild(row);
+                section.appendChild(grid);
                 menuContent.appendChild(section);
             });
         }
@@ -1358,7 +1746,7 @@
                 
                 navItems.forEach(item => {
                     item.classList.remove('active');
-                    const categoryId = Object.keys(menuData).find(key => 
+                    const categoryId = categoryOrder.find(key => 
                         menuData[key].title[currentLang] === item.textContent
                     );
                     
@@ -1371,3 +1759,5 @@
     </script>
 </body>
 </html>
+
+<!-- MoDEV -->
